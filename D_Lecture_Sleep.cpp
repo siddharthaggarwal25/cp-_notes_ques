@@ -1,24 +1,22 @@
 #include<bits/stdc++.h>
 using namespace std;
-int solve ( int ind , int flag  , vector<int >&theorms , vector<int > & sleep){
-         
-         int val =  ;
-        if( sleep[ind]==0) val= theorms[ind] + solve( ind +1 , flag , theorms , sleep);
-        else  if( flag  == 0) val = prefix[ind]  + solve( ind+k , 1 , theorms , sleep);
-        else  solve( ind+1  , flag , )
-}
 int  main (){
-     int n , k;
-     cin>>n>>k ;
-     vector<int > theorms( n), sleep( n );
-     for( int i=0 ;i< n  ;i++)cin>>theorms[i];
-     for( int i=0 ;i< n  ;i++)cin>>sleep[i];
-      vector< int > prefix( n);
-      for( int i=0 ;i<n ;i++){
-          for(int j=i   ;j < min ( n , i+k) ;j++){
-             prefix[i] += theorms[j];
-          }
-      }
-
+     int n , k ;
+     cin>>n>>k
+     vector<int >t( n ) , s( n );
+     for( int i=0 ;i< n  ;i++) cin>>t[i];
+     for( int i=0 ;i< n  ;i++) cin>>s[i];
+     vector< int > prefix( n , 0 );
+     int window =0 ;
+     for( int i=0 ;i< k  ;i++){
+        window += t[i];
+     }
+     p[0] = window ;
+     for( int i=1  ;i< n-k  ;i++){
+        p[i] = p[i-1]  - t[i-1] + t[i+k ]; 
+     }
+     for( int i= n-k  ;i< n  ;i++){
+        p[i] = p[i-1]- t[i-1];
+     }
 return 0;
 }
