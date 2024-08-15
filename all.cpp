@@ -6,7 +6,7 @@ public:
     int timer =1 ;
     void dfs( int node , int par , vector< int > &vis , vector< int > & low  , vector< int >& time  , vector<vector< int >> &adj  , vector<vector<int >>&bridges){
         vis[node]=1;
-        time[node]=timer;
+        time[node]= timer  ;
         low[node]= timer;
         timer++;
 

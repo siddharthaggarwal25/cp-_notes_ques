@@ -48,11 +48,12 @@ INSERTION SORT--->
 }
 
 MERGE SORT--->
-// divide and conqueur concept 
-//  use recursion 
-// tc --> nlogn 
-// sc --> n 
-void merge(vector<int> &nums, int low, int mid, int high)
+    // divide and conqueur concept
+    //  use recursion
+    // tc --> nlogn
+    // sc --> n
+    void
+    merge(vector<int> &nums, int low, int mid, int high)
 {
     vector<int> temp;
     int left = low;
@@ -88,7 +89,8 @@ void merge(vector<int> &nums, int low, int mid, int high)
 }
 void mergesort(vector<int> &nums, int low, int high)
 {
-    if (low >= high)return;
+    if (low >= high)
+        return;
     int mid = (low + high) / 2;
     mergesort(nums, low, mid);
     mergesort(nums, mid + 1, high);
@@ -100,35 +102,39 @@ vector<int> sortArray(vector<int> &nums)
     return nums;
 };
 
-
 OUICK SORT
-// divide and conquer 
-// tc --  nlog n  
-// sc -- 1 
+    // divide and conquer
+    // tc --  nlog n
+    // sc -- 1
 
-int partion ( int arr , int low  , int high){
-
-    int pivot  = arr[low];
-    int i = low ;
+    int
+    partion(int arr, int low, int high)
+{
+    int pivot = arr[low];
+    int i = low;
     int j = high;
-    while (i<j )
+    while (i < j)
     {
-        while( arr[i] <= pivot && i<= high -1){ // imp  <=  and high sa picha 
+        while (arr[i] <= pivot && i <= high - 1)
+        { // imp  <=  and high sa picha
             i++;
         }
-        while( arr[j] > pivot && j >= low +1){  // imp > and low sa aga ;
-            j-- ; 
+        while (arr[j] > pivot && j >= low + 1)
+        { // imp > and low sa aga ;
+            j--;
         }
-        if( i< j )swap( arr[i] , arr[j ]);
+        if (i < j)
+            swap(arr[i], arr[j]);
     }
-    swap(arr[low] , arr[j]);
-    return j ;
-    
+    swap(arr[low], arr[j]);
+    return j;
 }
 
-void quick( int arr [ ] , int low , int high){
-    if( low >= high)return ;
-    int partionIND  = partition ( arr[] , low  , high);
-    quick( arr , low  , partionIND - 1);
-    quick ( arr , partion+1 , high);
+void quick(int arr[], int low, int high)
+{
+    if (low >= high)
+        return;
+    int partionIND = partition(arr[], low, high);
+    quick(arr, low, partionIND - 1);
+    quick(arr, partion + 1, high);
 }

@@ -1,91 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
-void precompute(const string &S, vector<vector<bool>> &isPalindrome)
+#define pb push_back
+#define int long long
+int32_t main()
 {
-    int n = S.size();
-    for (int i = 0; i < n; ++i)
+    int n, m;
+    cin >> n >> m;
+    vector<pair<int, int>> a;
+    for (int i = 0; i < n; i++)
     {
-        isPalindrome[i][i] = true;
+        int x, y;
+        cin >> x >> y;
+        a.push_back({y, x});
     }
-    for (int len = 2; len <= n; ++len)
+    sort(a.begin(), a.end());
+    reverse( a.begin() , a.end());
+    int ans = 0;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    int e = 0, price = 0;
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i <= n - len; ++i)
+        price += a[i].second;
+        pq.push(a[i].second);
+        e++;
+        if (e < m)
+            continue;
+        if (e == m + 1)
         {
-            int j = i + len - 1;
-            if (S[i] == S[j])
-            {
-                if (len == 2)
-                {
-                    isPalindrome[i][j] = true;
-                }
-                else
-                {
-                    isPalindrome[i][j] = isPalindrome[i + 1][j - 1];
-                }
-            }
+            e--;
+            price = price - pq.top();
+            pq.pop();
         }
+        ans = max(ans, price + a[i].first * m);
     }
-}
-int countGoodTriplets(const string &S)
-{
-    int n = S.size();
-    vector<vector<bool>> isPalindrome(n, vector<bool>(n, false));
-    precompute(S, isPalindrome);
-    vector<int> dpLeft(n, 0);
-    for (int i = 0; i < n; ++i)
-    {
-        for (int j = 0; j <= i; ++j)
-        {
-            if (isPalindrome[j][i])
-            {
-                dpLeft[i]++;
-            }
-        }
-        if (i > 0)
-        {
-            dpLeft[i] += dpLeft[i - 1];
-        }
-    }
-    vector<int> dpRight(n, 0);
-    for (int i = n - 1; i >= 0; --i)
-    {
-        for (int j = i; j < n; ++j)
-        {
-            if (isPalindrome[i][j])
-            {
-                dpRight[i]++;
-            }
-        }
-        if (i < n - 1)
-        {
-            dpRight[i] += dpRight[i + 1];
-        }
-    }
-    int goodTriplets = 0;
-    for (int i = 1; i < n - 1; ++i)
-    {
-        for (int j = i; j < n - 1; ++j)
-        {
-            if (isPalindrome[i][j])
-            {
-                goodTriplets += dpLeft[i - 1] * dpRight[j + 1];
-            }
-        }
-    }
-    return goodTriplets;
-}
-int main()
-{
-    int t;
-    cin >> t;
-    while (t--)
-    {  
-        int n ;
-        cin>>n ;
-        
-        string S;
-        cin >> S;
-        cout << countGoodTriplets(S) << endl;
-    }
+
+    cout<< ans;
+
     return 0;
 }
