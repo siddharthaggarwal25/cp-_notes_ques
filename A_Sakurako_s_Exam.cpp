@@ -13,7 +13,7 @@ int  main (){
             }else{
                 b=1  ;
                 if(  a>= 2)cout<<"YES"<<endl;
-                else  cout<<"NO"<<endl;
+                else  cout<<"NO"<<endl;HE
             }
         }
      }
