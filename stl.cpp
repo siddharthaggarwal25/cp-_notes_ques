@@ -25,9 +25,9 @@
 // excess>>> name.first, name.second;
 // used mostly with vectors ;
 
-//   4>>SET
+// 4>>SET
 // set is a special kind of stl container which stores unique elemnys in sorted order
-//  set<data-type> setName;
+// set<data-type> setName;
 // set.insert(value);
 // set.size();
 // set.erase(value);
@@ -116,6 +116,7 @@ for(int i=2 ;i*i <=1000000 ;i++){
     }
 }
 
+
 smallest prime factor
 
 int spf[1000001];
@@ -144,8 +145,7 @@ int binaryExponentiation(int x, int n)
 
     int res = binaryExponentiation(x, n / 2);
 
-    if (n % 2 == 0)
-        return res * res;
+    if (n % 2 == 0) return res * res;
     return res * res * x;
 }
 // gcd
@@ -235,9 +235,7 @@ vector<vector<int>> adjacentList(n);
 vector<int> vis(n, 0);
 void dfs(int node)
 {
-
     vis[node] = 1;
-
     for (auto child : adjacentList[node])
     {
         if (!vis[child])
@@ -305,7 +303,7 @@ vector<int> color(n, 0);
 bool dfs(int node)
 {
     color[node] = 1;
-
+ 
     for (auto cjhild : adjacentlist[node])
     {
         if (color[child] == 1)
@@ -325,7 +323,7 @@ bool dfs(int node)
     return false;
 }
 
-//   calculating gs=cd for eact subtree in a given tree
+//   calculating gcd for eact subtree in a given tree
 
 vector<vector<int>> v(n);
 vector<int> value(n);

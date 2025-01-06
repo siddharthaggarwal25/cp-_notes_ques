@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define int long long 
-int32_t   main (){
+
+int   main (){
      int t ;
      cin>>t ;
      while ( t--){
@@ -13,8 +13,8 @@ int32_t   main (){
 
          int count = k ;
          for( int i =0  ;i< n  ;i++){
-            int value = v[i] ;
-            if(  v[i]*( n-i) >= k )break ;
+            long long int  value = v[i] ;
+            if(  value *( n-i) >= k )break ;
             else {
                 count++ ;
                 k = k- v[i];
@@ -25,3 +25,4 @@ int32_t   main (){
      }
 return 0;
 }
+
