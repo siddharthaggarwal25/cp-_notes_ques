@@ -2,18 +2,10 @@
 using namespace std;
 #define int long long 
 bool check(int num) {
-    int left = 0, right = num;
-    
-    while (left <= right) {
-        long long mid = left + (right - left) / 2;
-        long long sq = mid * mid;
-        
-        if (sq == num) return true;
-        else if (sq < num) left = mid + 1;
-        else right = mid - 1;
-    }
-    
-    return false;
+     int temp = sqrt ( num);
+     if( temp*temp ==  num)return true ;
+     return false;
+     
 }
 int32_t   main (){
       int t;
@@ -31,12 +23,12 @@ int32_t   main (){
                    if( check( sum + q)) {
                          ans.push_back( q+1);
                          ans.push_back( q);
-                         sum  += 2*q+1 ;
+                         sum  = sum + 2*q+1 ;
                          q += 2 ;
                          i++;
                    }else{
                     ans.push_back( q);
-                    sum +=q;
+                    sum = sum + q ;
                     q++;
                    }
                }

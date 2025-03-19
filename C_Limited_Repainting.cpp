@@ -1,64 +1,38 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-void solve(int ind, string &s, vector<char> &dp, vector<int> &penalty, int &ans, int k)
+vector<int> Solve(int n, string S)
 {
+    int left = 0, right = 0;
+    vector<int> a, z(n, 0);
 
-    if (ind == dp.size())
+    for (int i = 1; i < n; i++)
     {
-
-        int n = s.size();
-        int count = 0;
-        for (int i = 0; i < n; i++)
+        if (i > right)
         {
-            if (dp[i] == 'R')
-                continue;
+            left = i;
+            right = i;
+            while (right < n && S[right - left] == S[right])
+                right++;
+            z[i] = right - left;
+            right--;
+        }
+        else
+        {
+            if (z[i - left] < right - i + 1)
+            {
+                z[i] = z[i - left;];
+            }
             else
             {
-                while (i < n && dp[i] == 'B')
-                    i++;
-                i--;
-                count++;
+                left = i;
+                while (right < n && S[right - left] == S[right])
+                    right++;
+                z[i] = right - left;
+                right--;
             }
         }
-
-        if (count <= k)
-        {
-            int temp = 0;
-            for (int j = 0; j < n; j++)
-            {
-                if (s[j] != dp[j])
-                    temp = max(temp, penalty[j]);
-            }
-            ans = min(ans, temp);
-        }
-
-        return;
     }
 
-    dp[ind] = 'B';
-    solve(ind + 1, s, dp, penalty, ans, k);
-    dp[ind] = 'R';
-    solve(ind + 1, s, dp, penalty, ans, k);
-    return;
-}
-int main()
-{
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        int n, k;
-        cin >> n >> k;
-        string s;
-        cin >> s;
-        vector<int> penalty(n);
-        for (int i = 0; i < n; i++)  cin >> penalty[i];
-        vector<char> dp(n);
-        int ans = 1e9;
-        solve(0, s, dp, penalty, ans, k);
-        cout << ans << endl;
-    }
+    for (int i = 1; i < n; i++)
+        a.push_back(min(z[i], i));
 
-    return 0;
+    return a;
 }
