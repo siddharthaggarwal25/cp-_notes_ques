@@ -10,8 +10,17 @@ int main()
         cin >> n >> m;
         vector<vector<int>> v(n, vector<int>(m));
         for (int i = 0; i < n; i++)
+        {
+            string s;
+            cin >> s;
             for (int j = 0; j < m; j++)
-                cin >> v[i][j];
+            {
+                if (s[j] == '0')
+                    v[i][j] = 0;
+                else
+                    v[i][j] = 1;
+            }
+        }
         bool ans = true;
 
         for (int i = 0; i < n; i++)
@@ -21,8 +30,8 @@ int main()
 
                 if (v[i][j] == 1)
                 {
-                    bool temp1 = true ;
-                    bool  temp2 = true;
+                    bool temp1 = true;
+                    bool temp2 = true;
 
                     for (int k = 0; k < i; k++)
                         if (v[k][j] == 0)
@@ -31,7 +40,7 @@ int main()
                         if (v[i][k] == 0)
                             temp2 = false;
 
-                    if (temp1 == false && temp2 == false)
+                    if (!temp1 && !temp2)
                         ans = false;
                 }
             }
