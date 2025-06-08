@@ -303,7 +303,6 @@ vector<int> color(n, 0);
 bool dfs(int node)
 {
     color[node] = 1;
- 
     for (auto cjhild : adjacentlist[node])
     {
         if (color[child] == 1)
