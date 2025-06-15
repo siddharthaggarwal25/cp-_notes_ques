@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long 
+#define int long long
+
 class SegmentTree
 {
 public:
@@ -24,55 +25,56 @@ public:
         t[ind] = t[2 * ind] + t[2 * ind + 1];
     }
 
-    void update(int ind, int tl, int tr, int position, int value)
+    void update(int ind, int tl, int tr, int position)
     {
         if (tl == position && tr == position)
         {
-            t[ind] = value;
+            t[ind] = t[ind] ^ 1;
             return;
         }
-        if (position < tl || position > tr)
+        if (position > tr || position < tl)
             return;
+
         int tm = (tl + tr) / 2;
-        update(2 * ind, tl, tm, position, value);
-        update(2 * ind + 1, tm + 1, tr, position, value);
+        update(2 * ind, tl, tm, position);
+        update(2 * ind + 1, tm + 1, tr, position);
         t[ind] = t[2 * ind] + t[2 * ind + 1];
     }
-
-    int query(int ind, int tl, int tr, int l, int r)
+    int query(int ind, int tl, int tr, int k)
     {
-        if (l <= tl && tr <= r)
-            return t[ind];
-        if (l > tr || r < tl)
-            return 0;
+        if (tl == tr)
+            return tl;
         int tm = (tl + tr) / 2;
-        int leftans = query(2 * ind, tl, tm, l, r);
-        int rightans = query(2 * ind + 1, tm + 1, tr, l, r);
-        return leftans + rightans;
-    }
-};
-int main()
-{
-    int n, m;
-    cin >> n >> m;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-
-    SegmentTree* seg = new SegmentTree(n);
-    seg->build(a, 1, 0, n - 1);
-    while (m--)
-    {
-        // cout << "fef" << endl;
-        int x, y, z;
-        cin >> x >> y >> z;
-        if (x == 1)
+        if (t[2 * ind] >= k)
         {
-            seg->update(1, 0, n - 1, y, z);
+             return query(2 * ind, tl, tm, k);
         }
         else
         {
-            int ans = seg->query(1, 0, n - 1, y, z - 1);
+           return  query(2 * ind + 1, tm + 1, tr, k - t[2 * ind]);
+        }
+    }
+};
+int32_t main()
+{
+    int n, m;
+    cin >> n >> m;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    SegmentTree seg(n);
+    seg.build(v, 1, 0, n - 1);
+    while (m--)
+    {
+        int a, b;
+        cin >> a >> b;
+        if (a == 1)
+        {
+            seg.update(1, 0, n - 1, b);
+        }
+        else
+        {
+            int ans = seg.query(1, 0, n - 1, b + 1);
             cout << ans << endl;
         }
     }

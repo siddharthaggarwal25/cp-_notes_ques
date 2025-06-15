@@ -1,72 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-vector<vector<int>> adj;
-map<pair<int, int>, int> mp;
-vector<int> dis;
-vector<int> par;
 int32_t main()
 {
     int n, m;
     cin >> n >> m;
-    adj.resize(n + 1);
-    dis.assign(n + 1, 1e18);
-    par.assign(n + 1, 0);
+    vector<vector<pair<int, int>>> adj(n);
     for (int i = 0; i < m; i++)
     {
-        int x, y, w;
-        cin >> x >> y >> w;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
-        if (mp[{x, y}] == 0)
-        {
-            mp[{x, y}] = w;
-            mp[{y, x}] = w;
-        }
-        else
-        {
-            mp[{x, y}] = min(mp[{x, y}], w);
-            mp[{y, w}] = min(mp[{x, y}], w);
-        }
+        int u, v, w;
+        cin >> u >> v >> w;
+        u--;
+        v--;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
     }
-    dis[1] = 0;
-    par[1] = 1;
-    pq.push({0, 1});
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    vector<int> dis(n, 1e18);
+    vector<int> par(n);
+    for (int i = 0; i < n; i++)
+        par[i] = i;
+    dis[0] = 0;
+    pq.push({0, 0});
+
     while (!pq.empty())
     {
-        int distance = pq.top().first;
         int node = pq.top().second;
+        int cost = pq.top().first;
         pq.pop();
 
-        for (auto child : adj[node])
+        for (auto it : adj[node])
         {
-            if (dis[child] > distance + mp[{child, node}])
+            if (dis[it.first] > cost + it.second)
             {
-                dis[child] = distance + mp[{child, node}];
-                pq.push({dis[child], child});
-                par[child] = node;
+                dis[it.first] = cost + it.second;
+                pq.push({dis[it.first], it.first});
+                par[it.first] = node;
             }
         }
     }
-    // for (int i = 1; i <= n; i++)
-    //     cout << dis[i] << " ";
-    if (dis[n] == 1e18)
+
+    if (dis[n - 1] == 1e18)
         cout << -1 << endl;
     else
     {
-        stack<int> ans;
-        while (n != 1)
-        {
-            ans.push(n);
-            n = par[n];
+        stack<int > st ;
+        int ind  = n-1 ;
+        while( ind != 0){
+            st.push( ind);
+            ind  = par[ind];
         }
-        cout << 1 << " ";
-        while (!ans.empty())
-        {
-            cout << ans.top() << " ";
-            ans.pop();
+        cout<<1<<" ";
+        while( !st.empty()){
+            cout<<st.top() +1<<" ";
+            st.pop();
         }
+        cout<<endl;
     }
 
     return 0;

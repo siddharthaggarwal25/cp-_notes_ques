@@ -5,12 +5,10 @@ class SegmentTree
 {
 public:
     vector<int> t;
-
     SegmentTree(int len)
     {
         t.resize(4 * len);
     }
-
     void build(vector<int> &a, int ind, int tl, int tr)
     {
         if (tl == tr)
@@ -21,9 +19,8 @@ public:
         int tm = (tl + tr) / 2;
         build(a, 2 * ind, tl, tm);
         build(a, 2 * ind + 1, tm + 1, tr);
-        t[ind] = t[2 * ind] + t[2 * ind + 1];
+        t[ind] = max(t[2 * ind], t[2 * ind + 1]);
     }
-
     void update(int ind, int tl, int tr, int position, int value)
     {
         if (tl == position && tr == position)
@@ -31,51 +28,58 @@ public:
             t[ind] = value;
             return;
         }
-        if (position < tl || position > tr)
+        if (tl > position || tr < position)
             return;
         int tm = (tl + tr) / 2;
         update(2 * ind, tl, tm, position, value);
         update(2 * ind + 1, tm + 1, tr, position, value);
-        t[ind] = t[2 * ind] + t[2 * ind + 1];
+        t[ind] = max(t[2 * ind], t[2 * ind + 1]);
     }
 
-    int query(int ind, int tl, int tr, int l, int r)
+    int query(int ind, int tl, int tr, int k)
     {
-        if (l <= tl && tr <= r)
-            return t[ind];
-        if (l > tr || r < tl)
-            return 0;
+        if (tl == tr)
+        {
+            if (t[ind] >= k)
+                return tl;
+            return -1;
+        }
         int tm = (tl + tr) / 2;
-        int leftans = query(2 * ind, tl, tm, l, r);
-        int rightans = query(2 * ind + 1, tm + 1, tr, l, r);
-        return leftans + rightans;
+        if (t[2 * ind] >= k)
+            return query(2 * ind, tl, tm, k);
+        else if (t[2 * ind + 1] >= k)
+            return query(2 * ind + 1, tm + 1, tr, k);
+        else
+            return -1;
     }
 };
-int main()
+int32_t main()
 {
     int n, m;
     cin >> n >> m;
     vector<int> a(n);
     for (int i = 0; i < n; i++)
         cin >> a[i];
-
-    SegmentTree* seg = new SegmentTree(n);
-    seg->build(a, 1, 0, n - 1);
+    SegmentTree seg(n);
+    seg.build(a ,1 , 0 ,n-1);
     while (m--)
     {
-        // cout << "fef" << endl;
-        int x, y, z;
-        cin >> x >> y >> z;
+        int x;
+        cin >>x;
+          
         if (x == 1)
         {
-            seg->update(1, 0, n - 1, y, z);
+            int y, z;
+            cin >> y >> z;
+            seg.update(1 , 0 , n-1 , y, z );
         }
         else
         {
-            int ans = seg->query(1, 0, n - 1, y, z - 1);
-            cout << ans << endl;
+            int y;
+            cin >> y;
+            int ans  = seg.query( 1 ,0 , n-1 , y);
+            cout<<ans<<endl;
         }
     }
-
     return 0;
 }
