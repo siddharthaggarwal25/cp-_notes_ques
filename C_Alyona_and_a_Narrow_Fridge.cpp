@@ -1,67 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
+
+class  temp {
+    public :
+     int a  = 1 ;
+
+     void p ( ){
+        cout<<a<<endl;
+     }
+     void ( int x){
+        a = x 
+     }
+     
+};
+temp sid ; 
+int check(vector<int> &bottles, int ind)
+{ 
+    vector<int> temp = bottles;
+    sort(temp.begin() + 1, temp.begin() + ind + 1, greater<int>());
+    int height = 0;
+    for (int i = 1; i <= ind; i += 2)
+    {
+        if (i + 1 <= ind)
+            height += max(temp[i], temp[i + 1]);
+        else
+            height += temp[i];
+    }
+    return height;
+}
 int32_t main()
 {
-    int n, h;
-    cin >> n >> h;
-    int arr[n + 1];
-    for (int i = 1; i <= n; i++)
-    {
-        cin >> arr[i];
-    }
+    // int n, h;
+    // cin >> n >> h;
+    // vector<int> bottles(n + 1 , 0 );
+    // for (int i = 1; i <= n; i++)cin >> bottles[i];
 
-    int ans = 1;
-    for (int i = 1; i <= n; i++)
-    {
+    // int low = 1;
+    // int high = n;
+    // int ans  =1  ;
+    // while (low <= high)
+    // {
+    //     int mid = (low )  +( high -low )/ 2;
 
-        sort(arr + 1, arr + i + 1);
-        reverse(arr + 1, arr + i + 1);
-        int count = 0;
-        int val = 0;
-
-        for (int j = 1; j <= i; j++)
-        {
-
-            if (i % 2 == 0)
-            {
-                int curr = arr[j];
-                if (val + curr <= h)
-                {
-                    count += 2;
-                    val += curr;
-                }
-                j++;
-            }
-            else
-            {
-
-                if (j - i == 0)
-                {
-                    int curr = arr[j];
-                    if (val + curr <= h)
-                    {
-                        count++;
-                        val += curr;
-                    }
-                }
-                else
-                {
-                    int curr = arr[j];
-                    if (val + curr <= h)
-                    {
-                        count += 2;
-                        val += curr;
-                    }
-                    j++;
-                }
-            }
-
-            ans = max(ans, count);
-        }
-    }
-    cout << ans << endl;
-    // cout<<endl;
+    //     if (check(bottles, mid) <= h)
+    //     {
+    //         low = mid + 1;
+    //         ans = mid;
+    //     }
+    //     else
+    //     {
+    //         high = mid - 1;
+    //     }
+    // }
+    // cout << ans  << endl;
+    sid.p();
 
     return 0;
 }
