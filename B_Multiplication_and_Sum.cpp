@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define int long long 
 
+int mod = 1e9 + 7 ;
 class SegmentTree
 {
 public:
@@ -17,9 +19,9 @@ public:
         if (tl != tr)
         {
             isLazy[ind] = 1;
-            unval[ind] = unval[ind] * val;
+            unval[ind] = (unval[ind] * val)%mod;
         }
-        t[ind] = t[ind] * val;
+        t[ind] = (t[ind] * val)%mod;
     }
 
     void push_down(int ind, int tl, int tr)
@@ -40,9 +42,9 @@ public:
             return t[ind];
         push_down(ind, tl, tr);
         int tm = (tl + tr) / 2;
-        int leftans = query(2 * ind, tl, tm, l, r);
-        int rightans = query(2 * ind + 1, tm + 1, tr, l, r);
-        return leftans + rightans;
+        int leftans = query(2 * ind, tl, tm, l, r)%mod;
+        int rightans = query(2 * ind + 1, tm + 1, tr, l, r)%mod;
+        return (leftans + rightans)%mod;
     }
 
     void update(int ind, int tl, int tr, int l, int r, int val)
@@ -59,16 +61,25 @@ public:
         int tm = (tl + tr) / 2;
         update(2 * ind, tl, tm, l, r, val);
         update(2 * ind + 1, tm + 1, tr, l, r, val);
-        t[ind] = t[2 * ind] + t[2 * ind + 1];
+        t[ind] = (t[2 * ind]%mod + t[2 * ind + 1]%mod)%mod;
+    }
+
+    void build( int ind , int tl , int tr){
+         if( tl== tr)return ;
+        int tm  = ( tl + tr)/2;
+        build( 2*ind , tl ,tm );
+        build( 2*ind  +1  , tm+1 , tr);
+        t[ind] = t[2*ind] + t[2*ind+1];
     }
 };
 
-int main()
+int32_t main()
 {
 
     int n, m;
     cin >> n >> m;
     SegmentTree seg(n);
+    seg.build( 1 , 0 , n-1);
     while (m--)
     {
         int x;
@@ -82,6 +93,7 @@ int main()
         else
         {
             int l, r;
+            cin>>l>>r;
             cout << seg.query(1, 0, n - 1, l, r - 1) << endl;
         }
     }
