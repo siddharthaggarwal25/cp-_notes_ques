@@ -15,7 +15,8 @@ int32_t main()
         edges.push_back({u, {v, -w}});
     }
 
-    vector<int> dis(n + 1, 1e18);
+    const int INF = 1e16;
+    vector<int> dis(n + 1, INF);
     dis[1] = 0;
 
     for (int i = 1; i < n; i++)
@@ -26,7 +27,7 @@ int32_t main()
             int v = it.second.first;
             int wt = it.second.second;
 
-            if (dis[u] != 1e18 && dis[v] > dis[u] + wt)
+            if (dis[u] != INF && dis[v] > dis[u] + wt)
             {
                 dis[v] = dis[u] + wt;
             }
@@ -40,7 +41,7 @@ int32_t main()
         int v = it.second.first;
         int wt = it.second.second;
 
-        if (dis[u] != 1e18 && dis[v] > dis[u] + wt)
+        if (dis[u] != INF && dis[v] > dis[u] + wt)
         {
             hasNegativeCycle = true;
             break;
