@@ -1,105 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main()
-{
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        int n;
-        cin >> n;
+#define int long long
 
-        int q;
-        cin >> q;
-        while (q--)
-        {
-            string s;
-            cin >> s;
-            if (s == "->")
-            {
-                int x, y;
-                cin >> x >> y;
+int getIdx(int n, int x, int y) {
+    int res = 1, sz = 1 << n;
+    while (sz > 1) {
+        int h = sz / 2, blk = h * h;
+        if (x <= h && y <= h) {}
+        else if (x <= h && y > h) { res += 3 * blk; y -= h; }
+        else if (x > h && y <= h) { res += 2 * blk; x -= h; }
+        else { res += blk; x -= h; y -= h; }
+        sz = h;
+    }
+    return res;
+}
 
-                int size = pow(2, n);
-                int val = 1;
+pair<int, int> getCoord(int n, int d) {
+    int x = 1, y = 1, sz = 1 << n;
+    while (sz > 1) {
+        int blk = (sz * sz) / 4;
+        int r = (d - 1) / blk + 1;
+        d = (d - 1) % blk + 1;
+        if (r == 2) { x += sz / 2; y += sz / 2; }
+        else if (r == 3) x += sz / 2;
+        else if (r == 4) y += sz / 2;
+        sz /= 2;
+    }
+    return {x, y};
+}
 
-                while (size > 1)
-                {
-                    int cur_size = (size * size) / 4;
-
-                    if (x <= size / 2 && y <= size / 2)
-                    {
-                        val = val;
-                    }
-                    else if (x > size / 2 && y <= size / 2)
-                    {
-                        val += cur_size * 2;
-                        x = x - size / 2;
-                    }
-                    else if (x <= size / 2 && y > size)
-                    {
-                        val += cur_size * 3;
-                        y = y - size / 2;
-                    }
-                    else
-                    {
-                        val += cur_size;
-                        x = x - size / 2;
-                        y = y - size / 2;
-                    }
-                    size = size / 2;
-                }
-                cout << val << endl;
-            }
-            else
-            {
-                int d;
-                cin >> d;
-
-                int size = pow(2, n);
-                int curx = 1;
-                int cury = 1;
-
-                while (size > 1)
-                {
-                    int cur_size = (size * size) / 4;
-
-                    int start = 1;
-                    int end = cur_size;
-                    int i;
-                    for (i = 1; i <= 4; i++)
-                    {
-
-                        if (d >= start && d <= end)
-                        {
-                            d = d - start + 1;
-                            break;
-                        }
-                        else
-                        {
-                            start = end + 1;
-                            end = end + cur_size;
-                        }
-                    }
-
-                    if (i == 2)
-                    {
-                        curx += size / 2;
-                        cury += size / 2;
-                    }
-                    else if (i == 3)
-                    {
-                        curx += size / 2;
-                    }
-                    else if (i == 4)
-                    {
-                        cury += size / 2;
-                    }
-
-                    size = size / 2;
-                }
-
-                cout << curx << " " << cury << endl;
+int32_t main() {
+    int t; cin >> t;
+    while (t--) {
+        int n, q; cin >> n >> q;
+        while (q--) {
+            string s; cin >> s;
+            if (s == "->") {
+                int x, y; cin >> x >> y;
+                cout << getIdx(n, x, y) << '\n';
+            } else {
+                int d; cin >> d;
+                auto [x, y] = getCoord(n, d);
+                cout << x << " " << y << '\n';
             }
         }
     }
