@@ -1,58 +1,31 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define int long long
-int mod = 1e9 + 7;
-int maxsum(int arr[], int n)
-{
-    int temp[n];
-    temp[0] = arr[0];
-    for (int i = 1; i < n; i++)
-    {
-        if (temp[i - 1] >= 0)
-        {
-            temp[i] = temp[i - 1] + arr[i];
-        }
-        else
-        {
-            temp[i] = arr[i];
-        }
-    }
-    int ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-        ans = max(ans, temp[i]);
-    }
-    return ans;
-}
-int32_t main()
-{
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        int n, k;
-        cin >> n >> k;
-        int arr[n];
-        int total = 0;
-        for (int i = 0; i < n; i++)
-        {
-            cin >> arr[i];
-            total += arr[i];
-        }
-        int sum = maxsum(arr, n);
-        for (int i = 0; i < k; i++)
-        {
-            total += sum;
-            sum = sum + sum;
-            sum = sum % mod;
-        }
-        total = total % mod;
-        if (total < 0)
-        {
-            cout << total + mod << endl;
-            continue;
-        }
-        cout << total << endl;
-    }
-    return 0;
+#define int long long 
+int32_t  main (){
+       int t ;
+       cin>>t ;
+       while( t--){
+         int n , k;
+         cin>>n>>k;
+         int ans  =0 ;
+         vector<int > v( n);
+          for( int i =0  ;i<n ;i++)cin>>v[i] , ans+= v[i];
+          sort( v.begin() , v.end());
+          int low  =0;
+          int high  = n-1;
+          cout<<ans<<endl;
+
+          for( int i=0 ;i<k ;i++){
+             if( low != high  && v[low]+ v[low+1] < v[high]){
+                ans -= ( v[low] + v[low+1]);
+                low+=2 ;
+
+             }else{
+                  ans -=v[high];
+                  high --;
+             }
+          }
+          cout<<ans<<endl;
+       }
+return 0;
 }

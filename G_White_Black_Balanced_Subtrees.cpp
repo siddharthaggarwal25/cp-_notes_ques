@@ -1,24 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-int dfs(int node, int par, pair<int, int> &wb, string &s, vector<vector<int>> &adj)
+pair<int, int> dfs(int node, int par, int &ans, string &s, vector<vector<int>> &adj)
 {
 
-    int cnt = 0;
+    pair<int, int> wb = {0, 0};
     for (auto child : adj[node])
     {
         if (child == par)
             continue;
-        cnt += dfs(child, node, wb, s, adj);
+        auto childWB = dfs(child, node, ans, s, adj);
+        wb.first += childWB.first;
+        wb.second += childWB.second;
     }
     if (s[node - 1] == 'W')
         wb.first++;
     else
         wb.second++;
-    if (wb.first == wb.second)
-        return cnt + 1;
 
-    return cnt;
+    if (wb.first == wb.second)
+        ans++;
+
+    return wb;
+    ;
 }
 
 int32_t main()
@@ -40,8 +44,8 @@ int32_t main()
         string s;
         cin >> s;
         pair<int, int> wb = {0, 0};
-
-        int ans = dfs(1, -1, wb, s, adj);
+        int ans = 0;
+        dfs(1, -1, ans, s, adj);
         cout << ans << endl;
     }
     return 0;
