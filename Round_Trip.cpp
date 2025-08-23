@@ -1,76 +1,72 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define endl "\n"
-#define int long long int
-int n, m;
-int sv, ev;
-vector<vector<int>> g;
-vector<int> vis;
-vector<int> parent;
-bool dfs(int u, int p)
+
+vector<int> dfs(int node, int parent, vector<int> &par, vector<int> &vis, vector<vector<int>> &adj)
 {
-	vis[u] = true;
-	parent[u] = p;
-	for(auto v: g[u])
+	vis[node] = 1;
+	par[node] = parent;
+
+	for (int child : adj[node])
 	{
-		if(v == p) continue;
-		if(vis[v]) 
+		if (child == parent)
+			continue;
+
+		if (vis[child] == -1)
 		{
-			sv = v; 
-			ev = u; 
-			return true;
-		} 
-		if(!vis[v]) 
-			if(dfs(v,u)) 
-				return true;
+			auto cycle = dfs(child, node, par, vis, adj);
+			if (!cycle.empty())
+				return cycle;
+		}
+		else
+		{
+			vector<int> cycle;
+			cycle.push_back(child);
+			for (int v = node; v != child; v = par[v])
+			{
+				cycle.push_back(v);
+			}
+			cycle.push_back(child);
+			reverse(cycle.begin(), cycle.end());
+			return cycle;
+		}
 	}
-	return false;
+	return {};
 }
- 
- bool visit_all()
+
+int main()
 {
-	for(int i = 1; i <= n; ++i)
-	{
-		if(!vis[i])
-			if(dfs(i,-1)) return true;
-	}
-	return false;
-}
- 
-int32_t main()
-{
-	
+	int n, m;
 	cin >> n >> m;
-	g.resize(n+1);
-	vis.resize(n+1);
-	parent.resize(n+1);
-	for(int i =0 ; i < m; ++i)
+
+	vector<vector<int>> adj(n + 1);
+	for (int i = 0; i < m; i++)
 	{
 		int u, v;
 		cin >> u >> v;
-		g[u].push_back(v);
-		g[v].push_back(u);
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
- 
-	if(!visit_all())
+	if(m<n  ){
+		cout << "IMPOSSIBLE\n";
+		return 0 ;
+	}
+	vector<int> vis(n + 1, -1), par(n + 1, -1);
+
+	for (int i = 1; i <= n; i++)
 	{
-		cout << "IMPOSSIBLE" << endl;
-		return 0;
+		if (vis[i] == -1)
+		{
+			auto cycle = dfs(i, -1, par, vis, adj);
+			if (!cycle.empty())
+			{
+				cout << cycle.size() << "\n";
+				for (int v : cycle)
+					cout << v << " ";
+				cout << "\n";
+				return 0;
+			}
+		}
 	}
- 
-	int tv = ev;
-	vector<int> ans;
-	ans.push_back(ev);
-	while(tv != sv)
-	{
-		ans.push_back(parent[tv]);
-		tv = parent[tv];
-	}
-	ans.push_back(ev);
-	cout << ans.size() << endl;
-	for(auto c: ans)
-	{
-		cout << c << " ";
-	}
- 
+
+	return 0;
 }

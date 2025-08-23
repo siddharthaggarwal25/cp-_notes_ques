@@ -1,48 +1,55 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-bool dfs ( int node , vector< vector<int >> & adj , vector< int > & vis  , vector< int> & color){
-    vis[node] =1 ;
-    for( auto child : adj[node]){
-         if( vis[child]){
-            if ( color[child] == color[node] )return false;
-         }else{
-            if( color[node] ==1 ){
-                color[child] =2 ;
-            }else{
-                color[child ] =1 ;
-            }
-            bool flag = dfs( child , adj , vis , color);
-            if( !flag)return false;
-         }
+bool dfs(int node, int cur, vector<int> &color, vector<vector<int>> &adj)
+{
+    color[node] = cur;
+    for (auto child : adj[node])
+    {
+        if (color[child] == -1)
+        {
+            bool temp = dfs(child, cur ^ 1, color, adj);
+            if (temp == false)
+                return false;
+        }
+        else if (color[child] == cur)
+        {
+            return false;
+        }
     }
-    return true ;
+    return true;
 }
-int  main (){
-     int n, m;
+int main()
+{
+    int n, m;
     cin >> n >> m;
     vector<vector<int>> adj(n + 1);
     for (int i = 0; i < m; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
-    vector< int >  vis( n+1  , 0 );
-    vector< int > color( n+1  , 0 );
-    bool check = true ;
-    for( int i=0 ;i< n ;i++){
-        if( ! vis[i]){
-            color[i] =  1;
-           check  =  check & dfs(  i , adj , vis , color );
+    vector<int> color(n + 1, -1);
+    bool check = true;
+    for (int i = 1; i <= n; i++)
+    {
+        if (color[i] == -1)
+        {
+            check = check & dfs(i, 0, color, adj);
         }
+        if( !check)break;
     }
-    if( check){
-        for( int i=1  ;i<= n  ;i++){
-            cout<<color[i]<<" ";
-        }
-    }else{
-        cout<<"IMPOSSIBLE"<<endl;
+    if (!check)
+    {
+        cout << "IMPOSSIBLE" << endl;
     }
-return 0;
+    else
+    {
+
+        for (int i = 1; i <= n; i++)
+            cout << color[i] + 1 << " ";
+        cout << endl;
+    }
+    return 0;
 }
