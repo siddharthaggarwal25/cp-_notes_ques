@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main()
+#define int long long 
+int32_t main()
 {
     int t;
     cin >> t;
@@ -26,7 +27,7 @@ int main()
         {
             if (n - bits[i] <= k)
             {
-                k = k - bits[i];
+                k = k - (n-bits[i]);
                 ans = ans | 1 << i;
             }
         }
