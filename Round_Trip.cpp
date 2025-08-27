@@ -46,11 +46,8 @@ int main()
 		adj[u].push_back(v);
 		adj[v].push_back(u);
 	}
-	if(m<n  ){
-		cout << "IMPOSSIBLE\n";
-		return 0 ;
-	}
-	vector<int> vis(n + 1, -1), par(n + 1, -1);
+
+		vector<int> vis(n + 1, -1), par(n + 1, -1);
 
 	for (int i = 1; i <= n; i++)
 	{
@@ -67,6 +64,8 @@ int main()
 			}
 		}
 	}
+	
+	cout << "IMPOSSIBLE\n";
 
 	return 0;
 }

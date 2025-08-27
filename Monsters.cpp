@@ -1,56 +1,103 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
 
-int xi[] = {-1, 1, 0, 0};
-int yi[] = {0, 0, 1, -1};
-int par[1005][1005];
-void solve()
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, 1, -1};
+char moveChar[4] = {'D', 'U', 'R', 'L'};
+int main()
 {
     int n, m;
     cin >> n >> m;
-    vector<string> grid(n);
-    for (auto &i : grid)
-        cin >> i;
+    vector<vector<char>> adj(n, vector<char>(m));
     queue<pair<int, int>> q;
-    int x, y;
+    pair<int, int> start, end = {-1, -1};
+    vector<vector<int>> dis(n, vector<int>(m, 1e9));
+    vector<vector<int>> dis2(n, vector<int>(m, 1e9));
+    map<pair<int, int>, pair<pair<int, int>, char>> par;
     for (int i = 0; i < n; i++)
+    {
         for (int j = 0; j < m; j++)
-            if (grid[i][j] == 'M')
-                q.push({i, j});
-            else if (grid[i][j] == 'A')
-                x = i, y = j;
+        {
+            cin >> adj[i][j];
 
-    q.push({x, y});
-    par[x][y] = -1;
+            if (adj[i][j] == 'M')
+            {
+                q.push({i, j});
+                dis[i][j] = 0;
+            }
+
+            if (adj[i][j] == 'A')
+            {
+                start = {i, j};
+            }
+        }
+    }
 
     while (!q.empty())
     {
-        auto [x, y] = q.front();
+        int x = q.front().first;
+        int y = q.front().second;
         q.pop();
         for (int i = 0; i < 4; i++)
         {
-            int newx = x + xi[i],
-                newy = y + yi[i];
-            if (newx < 0 || newx >= n || newy < 0 || newy >= m || grid[newx][newy] != '.')
-                continue;
-            else
+            int newx = x + dx[i];
+            int newy = y + dy[i];
+
+            if (newx >= 0 && newy >= 0 && newx < n && newy < m && adj[newx][newy] != '#' && (dis[newx][newy] > dis[x][y] + 1))
             {
-                grid[newx][newy] = grid[x][y];
-                if (grid[newx][newy] == 'A') par[newx][newy] ='A';
+                dis[newx][newy] = dis[x][y] + 1;
                 q.push({newx, newy});
             }
         }
     }
-   for( auto i : grid){
-    for( auto j : i ){
-        cout<<j<<" ";
+    par[start] = {{start}, 'Q'};
+    q.push(start);
+    dis2[start.first][start.second] = 0;
+    while (!q.empty())
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+
+        if (x == 0 || y == 0 || x == n - 1 || y == m - 1)
+        {
+            end = {x, y};
+            break;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            int newx = x + dx[i];
+            int newy = y + dy[i];
+
+            if (newx >= 0 && newy >= 0 && newx < n && newy < m && adj[newx][newy] != '#' && dis2[newx][newy] == 1e9 && (dis2[x][y] + 1 < dis[newx][newy]))
+            {
+                dis2[newx][newy] = dis2[x][y] + 1;
+                par[{newx, newy}] = {{x, y}, moveChar[i]};
+                q.push({newx, newy});
+            }
+        }
     }
-    cout<<endl;
-   }
-}
-int32_t main()
-{
-    solve();
+
+    if (end.first == -1)
+    {
+        cout << "NO" << endl;
+    }
+    else
+    {
+        stack<char> path;
+        for (auto i = end; i != start; i = par[i].first)
+        {
+            path.push(par[i].second);
+        }
+        cout << "YES" << endl;
+        cout << path.size() << endl;
+        while (!path.empty())
+        {
+            cout << path.top();
+            path.pop();
+        }
+    }
+
     return 0;
 }
