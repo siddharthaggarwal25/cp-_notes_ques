@@ -63,7 +63,7 @@ int main()
     seg->build(a, 1, 0, n - 1);
     while (m--)
     {
-        // cout << "fef" << endl;
+        
         int x, y, z;
         cin >> x >> y >> z;
         if (x == 1)

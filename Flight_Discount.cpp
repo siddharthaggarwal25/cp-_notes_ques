@@ -1,41 +1,61 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-int  main (){
-     int n , m ;
-     cin>>n>>m ;
-     vector<pair< pair< int , int > , int  >>edges;
-     vector< vector< pair< int , int >>>adj( n+1);
-     for( int i=0 ;i< m  ;i++){
-        int x  , y , z ;
-        cin>>x>>y>>z;
-        adj[x].push_back( { y , z});
-        edges.push_back( { { x , y} , z});
-     }
-     vector< int >dis( n+1 , 1e9);
-     priority_queue< pair< int , int > , vector<pair< int , int >> , greater<pair<int , int >>>pq ;
-     pq.push ( { 0 , 1});
-     dis[1]=0;
-     while( !pq.empty()){
-        int dist = pq.top().first;
-        int node = pq.top().second;
-        pq.pop();
+#define int long long
+int32_t main()
+{
+   ios::sync_with_stdio(false);
+   cin.tie(nullptr);
+   int n, m;
+   cin >> n >> m;
+   vector<vector<pair<int, int>>> adj(n + 1);
+   for (int i = 0; i < m; i++)
+   {
+      int u, v, w;
+      cin >> u >> v >> w;
+      adj[u].push_back({v, w});
+   }
 
-        for( auto child : adj[node]){
-            if( dis[child.first] > dist + child.second ){
-                dis[child.first] = dist + child.second;
-                pq.push( { dis[child.first ] , child.first});
+   vector<vector<int>> dis(n + 1, vector<int>(2, 1e16));
+   priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>> pq;
+   dis[1][0] = 0;
+   pq.push({0, 1, 0});
+
+   while (!pq.empty())
+   {
+      auto [curdis, node, isUsed] = pq.top();
+      pq.pop();
+
+      if (dis[node][isUsed] < curdis)
+         continue;
+
+      for (auto child : adj[node])
+      {
+         if (isUsed == 1)
+         {
+            if (dis[child.first][1] > curdis + child.second)
+            {
+               dis[child.first][1] = curdis + child.second;
+               pq.push({curdis + child.second, child.first, 1});
             }
-        }
-     }
-     int ans = INT_MAX;
-     for( auto  i : edges){
-        int u = i.first.first;
-        int v = i.first.second;
-        int z = i.second;
-        ans  = min ( ans  ,  dis[n] - dis[v] + dis[u] + z/2 );
-     }
-     cout<<ans<<endl;
-    
+         }
 
-return 0;
+         if (isUsed == 0)
+         {
+            if (dis[child.first][1] > curdis + (child.second / 2))
+            {
+               dis[child.first][1] = curdis + (child.second / 2);
+               pq.push({curdis + (child.second / 2), child.first, 1});
+            }
+            if (dis[child.first][0] > curdis + child.second)
+            {
+               dis[child.first][0] = curdis + child.second;
+               pq.push({curdis + child.second, child.first, 0});
+            }
+         }
+      }
+   }
+
+   cout << dis[n][1] << endl;
+
+   return 0;
 }

@@ -1,53 +1,58 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main()
+#define int long long 
+int32_t main()
 {
     int t;
-    cint >> t;
+    cin >> t;
     while (t--)
     {
         int n;
         cin >> n;
-        vector<int> v(n), ones(n), zeros(n);
-        for (int i = 0; i < n; i++)
-        {
+        vector<int> v(n + 1);
+        for (int i = 1; i <= n; i++)
             cin >> v[i];
-        }
         string s;
         cin >> s;
-
-        int val1 = 0, val0 = 0;
-        for (int i = 0; i < n; i++)
+        int ans0 = 0, ans1 = 0;
+        vector<int> xorr(n + 1, 0);
+        for (int i = 1; i <= n; i++)
         {
-            if (s[i] == '1')
-            {
-                ones[i] = v[i] ^ val1;
-                val1 = v[i] ^ val1;
-                zeros[i] = val0;
-            }
+            xorr[i] = xorr[i - 1] ^ v[i];
+            if (s[i-1] == '1')
+                ans1 = ans1 ^ v[i];
             else
-            {
-                ones[i] = val1;
-                zeros[i] = v[i] ^ val0;
-                val - = v[i] ^ val0;
-            }
+                ans0 = ans0 ^ v[i];
         }
-
         int q;
+        cin >> q;
         while (q--)
         {
             int x;
-            cin >> X;
+            cin >> x;
             if (x == 1)
             {
                 int l, r;
                 cin >> l >> r;
+                int val = xorr[r] ^ xorr[l - 1];
+                ans0 = ans0 ^ val;
+                ans1 = ans1 ^ val;
             }
             else
             {
-                int temp;
+
+                int e;
+                cin >> e;
+                if (e == 1)
+                {
+                    cout << ans1 << " ";
+                }
+                else
+                    cout << ans0 << " ";
             }
         }
+
+        cout << endl;
     }
     return 0;
 }
