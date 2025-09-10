@@ -1,12 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
-int32_t main()
+int main()
 {
-    int n, m, k;
-    cin >> n >> m >> k;
+    int n, m;
+    cin >> n >> m;
     vector<vector<pair<int, int>>> adj(n + 1);
-    vector<int> ans;
     for (int i = 0; i < m; i++)
     {
         int a, b, c;
@@ -15,9 +13,9 @@ int32_t main()
     }
 
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    vector<vector<int>> dis(n + 1, vector<int>(k, 1e16));
+    vector<int> dis(n + 1, 1e9);
+    dis[1] = 0;
     pq.push({0, 1});
-    dis[1][0] = 0;
 
     while (!pq.empty())
     {
@@ -25,26 +23,17 @@ int32_t main()
         int node = pq.top().second;
         pq.pop();
 
-        if (dis[node][k - 1] < curdis)
-            continue;
-
         for (auto child : adj[node])
         {
-            if (dis[child.first][k - 1] > curdis + child.second)
+            if (dis[child.first] > curdis + child.second)
             {
-                dis[child.first][k - 1] = curdis + child.second;
+                dis[child.first] = curdis + child.second;
                 pq.push({curdis + child.second, child.first});
-                sort(dis[child.first].begin(), dis[child.first].end());
             }
         }
     }
 
-    // for (int j = 1; j <= n; j++)
-    // {
-        for (auto i = 0; i < k; i++)
-            cout << dis[n][i] << " ";
-        cout << endl;
-    // }
+    cout << dis[n] << endl;
 
     return 0;
 }
