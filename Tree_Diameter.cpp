@@ -1,46 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<int > height ;
-vector<vector<int >> adj ;
-void dfs( int node ,int parent , int h  ){
-     height[node] = h;
-     for( auto  child  : adj[node] ){
-         if( child  == parent )continue;
-         dfs( child , node, h+1);
-     }
+int dfs(int node, int parent, int &ans, vector<vector<int>> &adj)
+{
+    vector<int> temp;
+    for (auto child : adj[node])
+    {
+        if (child == parent)
+            continue;
+        int val = dfs(child, node, ans, adj);
+        temp.push_back(val);
+    }
+    sort(temp.begin(), temp.end(), greater<>());
+    if (temp.size() >= 2)
+    {
+        ans = max(ans, 2 + temp[0] + temp[1]);
+    }
+    if (temp.size() >= 1)
+    { 
+        ans = max( ans  , temp[0] +1);
+        return 1 + temp[0];
+    }
+
+    return 0;
 }
 int main()
 {
     int n;
     cin >> n;
-    adj.resize( n+1 );
-    height.resize( n+1);
-    for (int i = 1; i < n; i++)
+    vector<vector<int>> adj(n + 1);
+    for (int i = 0; i < n - 1; i++)
     {
-        int u, v;
-        cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
-    dfs ( 1  , -1 , 0);
-    int firstnode  ;
-    int maxi  =-1 ;
-     for( int i =1 ;i<= n  ; i++){
-         if( height [i] >maxi  ) {
-             firstnode = i ;
-             maxi = height[i];
-         }
-     }
 
-
-     dfs( firstnode , -1  ,0   );
-     maxi =0 ;
-     for( int i =1  ;i<= n ;i++){
-         if( height[i] > maxi )maxi = height[i];
-     }
-
-     cout<<maxi;
-
-
+    int ans = 0;
+    dfs(1, -1, ans, adj);
+    cout << ans << endl;
     return 0;
 }

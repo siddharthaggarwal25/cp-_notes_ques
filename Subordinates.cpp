@@ -1,36 +1,35 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-int  dfs( int node  , vector< int > & vis  , vector< int > & ans , vector< vector< int >> & adj  ){
+#define int long long 
 
-    vis[node] = 1;
-    int sz =0 ;
-    for( auto child : adj[node]){
-        if( !vis[child ]){
-             sz += dfs( child , vis  , ans  , adj )+1;
-        }
+int dfs(int node, vector<int> &ans, vector<vector<int>> &adj)
+{
+    int cnt = 0;
+    for (auto child : adj[node])
+    {
+        cnt += dfs(child, ans, adj);
     }
-    return ans[node] = sz  ;
-    
+    ans[node] = cnt;
+    return cnt + 1;
 }
-int  main (){
-     int n ;
-     cin>>n ;
-     vector< vector<int >>  adj(  n+1 );
-     for( int i = 2 ;i<= n ;i++){
-        int x ;
-        cin>>x ;
-        adj[x].push_back( i );
-     }
+int32_t main()
+{
+    int n;
+    cin >> n;
+    vector<vector<int>> adj(n + 1);
+    for (int i = 2; i <= n; i++)
+    {
+        int x;
+        cin >> x;
+        adj[x].push_back(i);
+    }
 
-     vector< int >  ans ( n+1  , 0 );
-     vector< int > vis( n+1 , 0 );
-     for( int i =1  ;i<= n ;i++){
-        if( !vis[i]){
-            dfs( i , vis , ans , adj  );
-        }
-     }
-     for( int i=1  ;i<=  n  ;i++){
-        cout<<ans[i]<<" ";
-     }
-return 0;
+    vector<int> ans(n + 1, 0);
+     dfs(1, ans, adj);
+    for (int i = 1; i <= n; i++)
+    {
+        cout << ans[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }

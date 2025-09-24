@@ -1,37 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-int ans = 0;
-vector<int> cur;
-void dfs(int node, int parent, vector<vector<int>> &adj)
+#define int long long 
+void dfs(int node, int parent, vector<vector<int>> &dp, vector<vector<int>> &adj)
 {
 
     for (auto child : adj[node])
     {
-        if (child != parent)
-            dfs(child, node, adj);
-        if (!cur[node] && !cur[child])
-        {
-            cur[node] = 1;
-            cur[child] = 1;
-            ans++;
-        }
+        if (child == parent)
+            continue;
+        dfs(child, node, dp, adj);
+        dp[node][0] += max(dp[child][0], dp[child][1]);
+    }
+
+    for (auto child : adj[node])
+    {
+        if (child == parent)
+            continue;
+        dp[node][1] = max(dp[node][1], dp[node][0] + 1 + dp[child][0] - max(dp[child][0], dp[child][1]));
     }
 }
-int main()
+int32_t main()
 {
     int n;
     cin >> n;
     vector<vector<int>> adj(n + 1);
-    for (int i = 1; i < n; i++)
+    for (int i = 0; i < n - 1; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
-    cur.assign(n + 1, 0);
-    // for( int i=0 ;i<=n ;i++)cout<<cur[i];
-    dfs(1, 0, adj);
-    cout << ans << endl;
+    vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+    dfs(1, -1, dp, adj);
+    cout << max(dp[1][0], dp[1][1]) << endl;
     return 0;
 }
