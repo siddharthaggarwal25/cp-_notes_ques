@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-int main()
+#define int long long
+int32_t main()
 {
     int t;
     cin >> t;
@@ -10,26 +11,74 @@ int main()
         cin >> n >> m;
         string s;
         cin >> s;
-        vector<int >odd( m);
-        vector<int >even;
+        map<int, int> mp;
         for (int i = 0; i < m; i++)
         {
-            cin>>odd[i];
+            int x;
+            cin >> x;
+            mp[x]++;
+        }
+        int ind = 1;
+
+        if (s[0] == 'A')
+        {
+            ind++;
+            mp[ind] = 1;
+        }
+        else
+        {
+            if(mp.find( 1) == mp.end())ind++;
+            while (mp.find(ind) != mp.end())
+            {
+                ind++;
+            }
+            mp[ind] = 1;
         }
 
-        int cnt = 0;
-        int 
-
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i < n; i++)
         {
-            if (s[i] == 'A')
+            if (s[i - 1] == 'A' && s[i] == 'A')
             {
-                
+                ind = ind + 1;
+                mp[ind] = 1;
+            }
+            else if (s[i - 1] == 'A' && s[i] == 'B')
+            {
+                while (mp.find(ind) != mp.end())
+                {
+                    ind++;
+                }
+                mp[ind] = 1;
+            }
+            else if (s[i - 1] == 'B' && s[i] == 'A')
+            {
+                while (mp.find(ind) != mp.end())
+                {
+                    ind++;
+                }
+                ind++;
+                mp[ind] = 1;
             }
             else
             {
+                while (mp.find(ind) != mp.end())
+                {
+                    ind++;
+                }
+                ind++;
+                while (mp.find(ind) != mp.end())
+                {
+                    ind++;
+                }
+                mp[ind] = 1;
             }
         }
+        cout << mp.size() << endl;
+        for (auto it : mp)
+        {
+            cout << it.first << " ";
+        }
+        cout << endl;
     }
     return 0;
 }

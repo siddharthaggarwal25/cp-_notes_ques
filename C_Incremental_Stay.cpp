@@ -9,12 +9,49 @@ int32_t main()
     {
         int n;
         cin >> n;
-        vector<int> v(2 * n);
-        for (int i = 0; i < 2 * n; i++)
-        {
+        int m = 2 * n;
+        vector<int> v(m);
+        for (int i = 0; i < m; i++)
             cin >> v[i];
+
+        vector<int> prefix(n), suffix(n);
+        vector<int> temp(m);
+        temp[0] = v[0];
+        prefix[0] = v[0];
+        suffix[0] = v[m - 1];
+        for (int i = 1; i < n; i++)
+            prefix[i] = prefix[i - 1] + v[i];
+        for (int i = 1; i < n; i++)
+            suffix[i] = suffix[i - 1] + v[m - 1 - i];
+
+        for (int i = 1; i < m; i++)
+        {
+            temp[i] = v[i] - v[i - 1];
+            if (i - 2 >= 0)
+                temp[i] += temp[i - 2];
         }
-        cout << -v[0] + v[1] - v[2] - v[3] + v[4] + v[5] - v[6] + v[7] << endl;
+
+        vector<int> ans;
+
+        int q = 0;
+        for (int i = 0; i < m; i++)
+        {
+            if (i % 2 == 0)
+                q -= v[i];
+            else
+                q += v[i];
+        }
+        ans.push_back(q);
+
+        for (int i = 0; i < n - 1; i++)
+        {
+            int val = suffix[i] - prefix[i] + (temp[m - 2 - i] - temp[i]);
+            ans.push_back(val);
+        }
+
+        for (auto &it : ans)
+            cout << it << " ";
+        cout << endl;
     }
     return 0;
 }
