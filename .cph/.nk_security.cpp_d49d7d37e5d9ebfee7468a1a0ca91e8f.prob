@@ -1,0 +1,1 @@
+{"name":"Local: nk_security","url":"d:\\cp\\nk_security.cpp","tests":[{"id":1764161189200,"input":"4 \n1 1 1 \n2 3 4 \n0 0 1 0 \n\n","output":""},{"id":1764161243126,"input":"4\n1 2 3\n2 3 4 \n0 1 1 0\n \n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\cp\\nk_security.cpp","group":"local","local":true}
